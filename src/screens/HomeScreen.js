@@ -1,56 +1,50 @@
-import React from 'react';
-import { View, Text, StyleSheet, Image, Platform } from 'react-native';
+import React, { useState } from 'react';
+import './Cards.css';
 
-const HomeScreen = () => {
-  const isWeb = Platform.OS === 'web';
+const Cards = () => {
+  const data = [
+    {
+      id: 1,
+      title: 'Card 1',
+      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+    },
+    {
+      id: 2,
+      title: 'Card 2',
+      description: 'Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+    },
+    {
+      id: 3,
+      title: 'Card 3',
+      description: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.',
+    },
+  ];
+
+  const [zoomedCard, setZoomedCard] = useState(null);
+
+  const handleCardHover = (id) => {
+    setZoomedCard(id);
+  };
+
+  const handleCardLeave = () => {
+    setZoomedCard(null);
+  };
 
   return (
-    <View style={styles.container}>
-      <Image
-        source={{ uri: 'https://dummyimage.com/300x200/ccc/000' }}
-        style={styles.image}
-      />
-      <Text style={isWeb ? styles.webTitle : styles.mobileTitle}>
-        {isWeb ? 'Hello from web' : 'Hello from mobile'}
-      </Text>
-      <Text style={styles.description}>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis lobortis
-        accumsan diam, non efficitur odio efficitur at. Nulla facilisi.
-      </Text>
-    </View>
+    <div className="container">
+      {data.map((item) => (
+        <div
+          key={item.id}
+          className={`card ${zoomedCard === item.id ? 'zoomed' : ''}`}
+          onMouseEnter={() => handleCardHover(item.id)}
+          onMouseLeave={handleCardLeave}
+        >
+          <h2 className="cardTitle">{item.title}</h2>
+          <p className="cardDescription">{item.description}</p>
+        </div>
+      ))}
+    </div>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 16,
-  },
-  image: {
-    width: 300,
-    height: 200,
-    marginBottom: 16,
-  },
-  webTitle: {
-    color: 'blue', // Set the desired text color for web
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 8,
-    textAlign: 'center',
-  },
-  mobileTitle: {
-    color: 'red', // Set the desired text color for mobile
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 8,
-    textAlign: 'center',
-  },
-  description: {
-    fontSize: 16,
-    textAlign: 'center',
-  },
-});
-
-export default HomeScreen;
+export default Cards;
